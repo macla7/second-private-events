@@ -1,0 +1,15 @@
+<h1>Welcome</h1>
+
+
+<p> is this alive.. <%= logged_in? %></p>
+
+<% if logged_in? %>
+  <h2>You are logged in, <%= current_user.name %>
+<% end %>
+
+<%= button_to 'Login', '/login', method: :get %>
+
+<%= button_to 'Sign Up', '/users/new', method: :get %>
+
+
+
