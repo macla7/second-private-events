@@ -25,6 +25,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       session[:user_id] = @user.id
+      flash[:notice] = "Sign up as #{user_params[:name]}!"
       redirect_to '/users'
     else
       flash.now[:error] = "Could not save client"

@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
   def create
     @user = User.find_by(name: params[:name])
     if @user
-      
+      flash[:notice] = "Logged in as #{params[:name]}!"
       session[:user_id] = @user.id
       redirect_to '/users'
     else
@@ -18,6 +18,15 @@ class SessionsController < ApplicationController
   def login
   end
 
+  def destroy
+    session.delete(:user_id)
+    @current_user = nil
+    redirect_to '/welcome'
+  end
+
   def page_requires_login
+  end
+
+  def welcome
   end
 end
