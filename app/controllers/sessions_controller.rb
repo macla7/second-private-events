@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
     if @user
       flash[:notice] = "Logged in as #{params[:name]}!"
       session[:user_id] = @user.id
+      session[:name] = @user.name
       redirect_to '/users'
     else
       redirect_to '/login'

@@ -11,12 +11,17 @@
   </head>
 
   <body>
-  <% if flash[:notice] %>
-    <div><%= notice %></div>
-  <% end %>
-  <% if flash[:alert] %>
-    <div><% alert %></div>
-  <% end %>
+    <% if flash[:notice] %>
+      <div><%= notice %></div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div><% alert %></div>
+    <% end %>
+    <nav>
+      <%= button_to 'User\'s Page', users_path, method: :get %>
+      <%= button_to 'Event\'s Page', events_path, method: :get %>
+      <%= button_to 'Log out', '/destroy', method: :delete %>
+    </nav>
     <%= yield %>
   </body>
 </html>

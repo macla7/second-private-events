@@ -7,4 +7,9 @@ Rails.application.routes.draw do
   get '/welcome', to: 'sessions#welcome'
   delete '/destroy', to: 'sessions#destroy'
   get '/authorised', to: 'sessions#page_requires_login'
+
+  get '/events', to: 'events#index'
+  get '/events/new', to: 'events#new'
+  post '/events', to: 'events#create'
+  get '/events/:id', to: 'events#show'
 end
