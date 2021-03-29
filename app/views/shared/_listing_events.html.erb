@@ -1,0 +1,43 @@
+
+<% [:new, :old].each do |event| %>
+<% event == :new ? sort_e = which_events.future : sort_e = which_events.past %>
+  <% if sort_e == [] && which_events.future == [] && event == :old %>
+    <p>   -- No Event's Showing -- </p>
+  <% elsif sort_e != [] %>
+    <h3><%= event == :new ? 'Upcoming Event\'s' : 'Past Events' %></h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Party</th>
+          <th>Host</th>
+          <th>Location</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+      <tbody>
+      
+      <% sort_e.each do |e| %>
+        <tr>
+          <td><%= e.name %></td>
+          <td><%= e.user_id %></td>
+          <td><%= e.location %></td>
+          <td><%= e.time %></td>
+
+          <% if current_user.invited_events.pluck(:id).any?(e.id) %>
+            <td><%= event == :new ? 'Invited' : 'Didn\'t Attend' %></td>
+            <td><%= link_to 'Show', "/events/#{e.id}", method: :get %></td>
+          <% elsif current_user.attending_events.pluck(:id).any?(e.id) %>
+            <td><%= event == :new ? 'Attending' : 'Attended' %></td>
+            <td><%= link_to 'Show', "/events/#{e.id}", method: :get %></td>
+          <% elsif current_user.id == e.user_id.to_i %>
+            <td><%= event == :new ? 'Hosting' : 'Hosted' %></td>
+            <td><%= link_to 'Show', "/events/#{e.id}", method: :get %></td>
+          <% end %>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>

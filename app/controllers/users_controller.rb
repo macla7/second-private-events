@@ -9,6 +9,7 @@ class UsersController < ApplicationController
 
   # GET /users/1 or /users/1.json
   def show
+    @current_user = User.find(session[:user_id])
     @events = Event.all
   end
 

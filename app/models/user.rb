@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :other_events, class_name: 'Eventlog', foreign_key: 'attendee_id', inverse_of: 'attendee'
   has_many :attending_events, -> { where('eventlogs.invite_accept = ?', true) }, through: :other_events,  source: :event
   has_many :invited_events, -> { where('eventlogs.invite_accept = ?', false) }, through: :other_events,  source: :event
+  has_many :events, -> { where('eventlogs.invite_accept != ? ', :id) }, through: :other_events,  source: :event
 
   validates :name, uniqueness: true
 end

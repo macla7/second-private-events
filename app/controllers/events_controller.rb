@@ -9,6 +9,7 @@ class EventsController < ApplicationController
 
   # GET /users/1 or /users/1.json
   def show
+    @current_user = User.find(session[:user_id])
   end
 
   # GET /users/new
@@ -39,6 +40,22 @@ class EventsController < ApplicationController
     @eventlog.invite_accept = false
     if @eventlog.save!
       flash.now[:notice] = "Made new invite to #{params[:name]}!"
+      redirect_to '/events'
+    else
+      flash.now[:error] = @eventlog
+      render action: "show"
+    end
+  end
+
+  def accept
+    @current_user = User.find(session[:user_id])
+    @event = Event.find(params[:id])
+
+    @up_event = @current_user.events.delete(@event)
+    @new_event = Eventlog.new(attendee_id: session[:user_id], event_id: params[:id], invite_accept: true)
+    
+    if @new_event.save!
+      flash.now[:notice] = "Accepted Invite!"
       redirect_to '/events'
     else
       flash.now[:error] = @eventlog

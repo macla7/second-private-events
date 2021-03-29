@@ -7,9 +7,23 @@
   <% end %>
 </ul>
 
-<h3>Invite Friends</h3>
-<%= form_with url: "/events_ass/#{@event.id}", method: :post do |form| %>
-  <%= form.label :name %>
-  <%= form.text_field :name %>
-  <%= form.submit 'Invite'%>
-<%end%>
+<!-- Invite section -->
+<% if @event.user_id.to_i == session[:user_id] %>
+  <h3>Invite Friends</h3>
+  <%= form_with url: "/events_ass/#{@event.id}", method: :post do |form| %>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+    <%= form.submit 'Invite'%>
+  <%end%>
+<% end %>
+
+<% if @current_user.invited_events.pluck(:id).any?(@event.id) %>
+  <%= button_to 'Accept Invite', "/events/accept/#{@event.id}", method: :get %>
+<% end %>
+
+<h3>Invited</h3>
+<ul>
+  <% @event.invitees.each do |a| %>
+    <li><%= a.name %></li>
+  <% end %>
+</ul>

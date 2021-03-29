@@ -1,5 +1,5 @@
 class Event < ApplicationRecord
-  has_many :eventlogs
+  has_many :eventlogs, foreign_key: 'event_id'
   has_many :attendees, -> { where('eventlogs.invite_accept = ?', true) }, through: :eventlogs, source: :attendee
   has_many :invitees, -> { where('eventlogs.invite_accept = ?', false) }, through: :eventlogs, source: :attendee
   belongs_to :host, class_name: 'User', foreign_key: 'user_id', inverse_of: 'own_events'
