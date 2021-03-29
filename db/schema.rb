@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_28_024123) do
+ActiveRecord::Schema.define(version: 2021_03_28_212443) do
 
   create_table "eventlogs", id: false, force: :cascade do |t|
     t.integer "attendee_id"
     t.integer "event_id"
+    t.boolean "invite_accept"
     t.index ["attendee_id"], name: "index_eventlogs_on_attendee_id"
     t.index ["event_id"], name: "index_eventlogs_on_event_id"
   end

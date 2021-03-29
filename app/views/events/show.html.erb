@@ -1,3 +1,15 @@
 <h1>Event Page</h1>
 <h2><%= session[:name] %>'s event</h2>
 <h3><%= @event.name %></h3>
+<ul>
+  <% @event.attendees.each do |a| %>
+    <li><%= a.name %></li>
+  <% end %>
+</ul>
+
+<h3>Invite Friends</h3>
+<%= form_with url: "/events_ass/#{@event.id}", method: :post do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name %>
+  <%= form.submit 'Invite'%>
+<%end%>

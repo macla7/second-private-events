@@ -15,12 +15,18 @@
       <div><%= notice %></div>
     <% end %>
     <% if flash[:alert] %>
-      <div><% alert %></div>
+      <div><%= alert %></div>
+    <% end %>
+    <% if flash[:error] %>
+      <div><%= flash[:error] %></div>
     <% end %>
     <nav>
-      <%= button_to 'User\'s Page', users_path, method: :get %>
-      <%= button_to 'Event\'s Page', events_path, method: :get %>
-      <%= button_to 'Log out', '/destroy', method: :delete %>
+      <% unless session[:user_id].nil? %>
+        <%= button_to 'Users Directory', users_path, method: :get %>
+        <%= button_to 'Event\'s Page', events_path, method: :get %>
+        <%= button_to "Profile", user_path(session[:user_id]), method: :get %>
+        <%= button_to 'Log out', '/destroy', method: :delete %>
+      <% end %>
     </nav>
     <%= yield %>
   </body>

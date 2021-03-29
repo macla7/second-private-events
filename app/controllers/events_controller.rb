@@ -1,8 +1,9 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: %i[ show edit update destroy ]
+  before_action :set_event, only: %i[ show edit update destroy create_ass]
 
   # GET /users or /users.json
   def index
+    @current_user = User.find(session[:user_id])
     @events = Event.all
   end
 
@@ -31,9 +32,27 @@ class EventsController < ApplicationController
     end
   end
 
+  def create_ass
+    id = User.find_by(name: params[:name]).attributes.slice('id')
+    @eventlog = Eventlog.new(attendee_id: id['id'])
+    @eventlog.event_id = @event.id
+    @eventlog.invite_accept = false
+    if @eventlog.save!
+      flash.now[:notice] = "Made new invite to #{params[:name]}!"
+      redirect_to '/events'
+    else
+      flash.now[:error] = @eventlog
+      render action: "show"
+    end
+  end
+
   private
   def event_params
     params.require(:event).permit(:name, :location, :time)
+  end
+
+  def invite_params
+    params.permit(:name)
   end
 
   def set_event
