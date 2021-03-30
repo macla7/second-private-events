@@ -1,15 +1,14 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: %i[ show edit update destroy create_ass]
+  before_action :set_event, only: %i[ show edit update destroy create_ass accept ]
+  before_action :set_current_user, only: %i[ index show accept ]
 
   # GET /users or /users.json
   def index
-    @current_user = User.find(session[:user_id])
     @events = Event.all
   end
 
   # GET /users/1 or /users/1.json
   def show
-    @current_user = User.find(session[:user_id])
   end
 
   # GET /users/new
@@ -53,9 +52,6 @@ class EventsController < ApplicationController
   end
 
   def accept
-    @current_user = User.find(session[:user_id])
-    @event = Event.find(params[:id])
-
     @up_event = @current_user.events.delete(@event)
     @new_event = Eventlog.new(attendee_id: session[:user_id], event_id: params[:id], invite_accept: true)
     
@@ -79,5 +75,9 @@ class EventsController < ApplicationController
 
   def set_event
     @event = Event.find(params[:id])
+  end
+
+  def set_current_user
+    @current_user = User.find(session[:user_id])
   end
 end
