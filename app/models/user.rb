@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :events, -> { where('eventlogs.invite_accept != ? ', :id) }, through: :other_events,  source: :event
 
   validates :name, uniqueness: true
+
+
 end
 
 # Version 1

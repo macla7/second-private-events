@@ -8,16 +8,16 @@
 </ul>
 
 <!-- Invite section -->
-<% if @event.user_id.to_i == session[:user_id] %>
+<% if @event.user_id.to_i == session[:user_id] && (@event.time > Time.now) %>
   <h3>Invite Friends</h3>
   <%= form_with url: "/events_ass/#{@event.id}", method: :post do |form| %>
     <%= form.label :name %>
     <%= form.text_field :name %>
-    <%= form.submit 'Invite'%>
+    <%= form.submit 'Invite' %>
   <%end%>
 <% end %>
 
-<% if @current_user.invited_events.pluck(:id).any?(@event.id) %>
+<% if @current_user.invited_events.pluck(:id).any?(@event.id) && (@event.time > Time.now) %>
   <%= button_to 'Accept Invite', "/events/accept/#{@event.id}", method: :get %>
 <% end %>
 

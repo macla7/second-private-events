@@ -34,16 +34,21 @@ class EventsController < ApplicationController
   end
 
   def create_ass
-    id = User.find_by(name: params[:name]).attributes.slice('id')
-    @eventlog = Eventlog.new(attendee_id: id['id'])
-    @eventlog.event_id = @event.id
-    @eventlog.invite_accept = false
-    if @eventlog.save!
-      flash.now[:notice] = "Made new invite to #{params[:name]}!"
-      redirect_to '/events'
+    if User.find_by(name: params[:name]).nil?
+      flash[:error] = 'User doesn\'t exist!'
+      redirect_to "/events/#{@event.id}"
     else
-      flash.now[:error] = @eventlog
-      render action: "show"
+      id = User.find_by(name: params[:name]).attributes.slice('id')
+      @eventlog = Eventlog.new(attendee_id: id['id'])
+      @eventlog.event_id = @event.id
+      @eventlog.invite_accept = false
+      if @eventlog.save!
+        flash.now[:notice] = "Made new invite to #{params[:name]}!"
+        redirect_to '/events'
+      else
+        flash.now[:error] = @eventlog
+        render action: "show"
+      end
     end
   end
 
